@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ana Betsy Store — Ropa y accesorios en Cali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF7F2;
+    --surface:#FFFFFF;
+    --ink:#241228;
+    --magenta:#D6236B;
+    --gold:#C9971F;
+    --violet:#5B2A86;
+    --azul:#2C5AA0;
+    --muted:#8A7383;
+    --line:#EADFE0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:'Work Sans',sans-serif;line-height:1.5;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;line-height:1.1;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px;}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,247,242,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:12px;}
+  .logo{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;color:var(--violet);white-space:nowrap;}
+  .logo span{color:var(--magenta);}
+  .nav-links{display:flex;gap:22px;font-size:.92rem;font-weight:500;}
+  .nav-links a:hover{color:var(--magenta);}
+  .nav-cta{background:#25D366;color:#fff;padding:9px 16px;border-radius:30px;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .burger{display:none;background:none;border:1.5px solid var(--line);border-radius:10px;width:42px;height:42px;font-size:1.2rem;cursor:pointer;color:var(--ink);}
+  .mobile-menu{display:none;flex-direction:column;padding:14px 20px 18px;border-top:1px solid var(--line);background:var(--bg);}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{padding:12px 4px;border-bottom:1px solid var(--line);font-weight:500;}
+  .mobile-menu a:last-child{border-bottom:none;}
+
+  .hero{padding:56px 0 50px;}
+  .hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;}
+  .eyebrow{color:var(--magenta);font-weight:600;font-size:.98rem;margin-bottom:12px;}
+  .hero h1{font-size:clamp(2.1rem,4vw,3.1rem);max-width:12ch;}
+  .hero p{margin-top:16px;font-size:1.05rem;color:var(--muted);max-width:42ch;}
+
+  .generos{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;}
+  .genero-btn{flex:1;min-width:150px;padding:20px;border-radius:16px;color:#fff;font-family:'Fraunces',serif;font-size:1.15rem;cursor:pointer;border:none;text-align:left;position:relative;overflow:hidden;}
+  .genero-btn small{display:block;font-family:'Work Sans',sans-serif;font-weight:500;font-size:.78rem;opacity:.85;margin-top:4px;}
+  .genero-btn.mujer{background:linear-gradient(135deg,var(--magenta),#a3195c);}
+  .genero-btn.hombre{background:linear-gradient(135deg,var(--violet),#3a1a5c);}
+  .genero-btn:hover{transform:translateY(-2px);}
+
+  .hero-collage{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:6px;aspect-ratio:1/1;border-radius:20px;overflow:hidden;}
+  .hero-collage img{width:100%;height:100%;object-fit:cover;}
+
+  .btn{padding:13px 24px;border-radius:30px;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:8px;border:2px solid transparent;cursor:pointer;}
+  .btn-outline{border-color:var(--ink);color:var(--ink);}
+  .btn-outline:hover{background:var(--ink);color:#fff;}
+  .btn-whatsapp{background:#25D366;color:#fff;}
+  .btn-whatsapp:hover{background:#1fb958;}
+
+  .section-head{max-width:60ch;margin-bottom:28px;}
+  .section-head h2{font-size:clamp(1.6rem,2.8vw,2.2rem);}
+  .section-head p{color:var(--muted);margin-top:8px;}
+
+  .catalogo{padding:56px 0;background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .filtro-grupo{margin-bottom:16px;}
+  .filtro-label{font-size:.75rem;color:var(--muted);margin-bottom:8px;font-weight:600;}
+  .filtros{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{padding:8px 16px;border-radius:24px;border:1.5px solid var(--line);background:transparent;font-weight:500;font-size:.85rem;cursor:pointer;color:var(--muted);}
+  .chip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .chip.g-mujer.active{background:var(--magenta);border-color:var(--magenta);}
+  .chip.g-hombre.active{background:var(--violet);border-color:var(--violet);}
+
+  .grid-productos{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px;}
+  .card{background:var(--bg);border-radius:16px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;position:relative;}
+  .card img{aspect-ratio:1/1;object-fit:cover;width:100%;background:var(--line);}
+  .card .destacado-tag{position:absolute;top:10px;left:10px;background:var(--gold);color:#fff;font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:20px;}
+  .card .limitado-tag{position:absolute;top:10px;right:10px;background:var(--magenta);color:#fff;font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:20px;}
+  .card-body{padding:14px;display:flex;flex-direction:column;gap:5px;flex:1;}
+  .card-body h4{font-family:'Fraunces',serif;font-size:1rem;}
+  .card-meta{display:flex;flex-wrap:wrap;gap:5px;margin:3px 0 5px;}
+  .badge{font-size:.68rem;padding:3px 8px;border-radius:20px;background:#fff;border:1px solid var(--line);color:var(--muted);}
+  .badge.disp{border-color:var(--gold);color:var(--gold);}
+  .badge.agotado{border-color:var(--muted);color:var(--muted);text-decoration:line-through;}
+  .precio{font-weight:700;font-size:1.05rem;color:var(--magenta);margin-top:auto;}
+  .card-cta{margin-top:8px;background:#25D366;color:#fff;text-align:center;padding:9px;border-radius:10px;font-weight:600;font-size:.82rem;}
+  .card-cta:hover{background:#1fb958;}
+  .estado-carga{padding:40px 0;text-align:center;color:var(--muted);font-size:.9rem;}
+
+  .no-encontraste{margin-top:32px;background:var(--bg);border:1px dashed var(--line);border-radius:16px;padding:24px;text-align:center;}
+  .no-encontraste p{color:var(--muted);margin-bottom:14px;font-size:.95rem;}
+
+  .servicios{padding:56px 0;}
+  .serv-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .serv-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px;}
+  .serv-card h3{font-size:1.3rem;margin-bottom:8px;}
+  .serv-card p{color:var(--muted);}
+
+  .pasos{padding:56px 0;background:var(--violet);color:#fff;}
+  .pasos .section-head h2{color:#fff;}
+  .pasos .section-head p{color:#e2d4ef;}
+  .pasos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .paso{border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:24px;}
+  .paso-num{font-family:'Fraunces',serif;font-size:2rem;color:var(--gold);}
+  .paso h3{margin-top:6px;font-size:1.1rem;color:#fff;}
+  .paso p{margin-top:6px;color:#e2d4ef;font-size:.9rem;}
+
+  .pagos{padding:56px 0;}
+  .pagos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .pago-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center;}
+  .pago-card .icon{font-size:1.7rem;margin-bottom:8px;}
+  .pago-card h4{font-size:.95rem;margin-bottom:5px;}
+  .pago-card p{font-size:.8rem;color:var(--muted);}
+  .pago-nota{margin-top:22px;font-size:.83rem;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:16px;}
+
+  footer{background:var(--ink);color:#fff;padding:48px 0 24px;}
+  .foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:28px;margin-bottom:34px;}
+  footer h3{font-family:'Fraunces',serif;font-size:1.2rem;color:#fff;}
+  footer p{color:#c9b8c4;margin-top:8px;font-size:.88rem;}
+  .foot-links a{display:block;color:#c9b8c4;margin-bottom:9px;font-size:.88rem;}
+  .foot-links a:hover{color:#fff;}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.12);padding-top:18px;font-size:.78rem;color:#8A7383;text-align:center;}
+
+  .wa-float{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:60;}
+  .wa-float:hover{transform:scale(1.06);}
+
+  @media(max-width:900px){
+    .nav-links{display:none;}
+    .burger{display:block;}
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-collage{order:-1;aspect-ratio:4/3;}
+    .generos{flex-direction:column;}
+    .grid-productos{grid-template-columns:repeat(2,1fr);}
+    .serv-grid{grid-template-columns:1fr;}
+    .pasos-grid{grid-template-columns:1fr;}
+    .pagos-grid{grid-template-columns:repeat(2,1fr);}
+    .foot-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:480px){
+    .grid-productos{grid-template-columns:1fr 1fr;gap:10px;}
+    .card-body{padding:10px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">Ana Betsy <span>Store</span></div>
+    <div class="nav-links">
+      <a href="#" onclick="irACatalogo('Mujer');return false;">Mujer</a>
+      <a href="#" onclick="irACatalogo('Hombre');return false;">Hombre</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#pagos">Pagos</a>
+    </div>
+    <a class="nav-cta" href="https://wa.me/573164493078?text=Hola%20Ana%20Betsy%20Store%2C%20quiero%20ver%20su%20catálogo" target="_blank">💬 WhatsApp</a>
+    <button class="burger" onclick="toggleMenu()" aria-label="Abrir menú">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#" onclick="toggleMenu();irACatalogo('Mujer');return false;">Mujer</a>
+    <a href="#" onclick="toggleMenu();irACatalogo('Hombre');return false;">Hombre</a>
+    <a href="#servicios" onclick="toggleMenu();">Servicios</a>
+    <a href="#pagos" onclick="toggleMenu();">Pagos</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Ropa · Calzado · Accesorios</div>
+      <h1>Para cada parte de ti, algo que brilla.</h1>
+      <p>Todo lo que necesitas, para ella y para él, en un mismo lugar. Eliges aquí, confirmas por WhatsApp, y listo.</p>
+      <div class="generos">
+        <button class="genero-btn mujer" onclick="irACatalogo('Mujer')">Para Ella<small>Ropa, calzado, collares, pulseras y más</small></button>
+        <button class="genero-btn hombre" onclick="irACatalogo('Hombre')">Para Él<small>Ropa, deportivo, tenis y más</small></button>
+      </div>
+    </div>
+    <div class="hero-collage" id="hero-collage"></div>
+  </div>
+</header>
+
+<section class="catalogo" id="catalogo">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Lo que tenemos ahora mismo</h2>
+      <p>Se actualiza solo desde Airtable — cada pieza se pide directo por WhatsApp.</p>
+    </div>
+
+    <div class="filtro-grupo">
+      <div class="filtro-label">Género</div>
+      <div class="filtros" id="filtros-genero">
+        <button class="chip active" data-genero="Todos" onclick="setGenero('Todos', this)">Todos</button>
+        <button class="chip g-mujer" data-genero="Mujer" onclick="setGenero('Mujer', this)">Mujer</button>
+        <button class="chip g-hombre" data-genero="Hombre" onclick="setGenero('Hombre', this)">Hombre</button>
+        <button class="chip" id="chip-limitado" onclick="toggleLimitado(this)" style="border-color:var(--magenta);color:var(--magenta);">⏳ Solo limitados</button>
+      </div>
+    </div>
+
+    <div class="filtro-grupo">
+      <div class="filtro-label">Categoría</div>
+      <div class="filtros" id="filtros-categoria"></div>
+    </div>
+
+    <div id="grid-productos" class="grid-productos"></div>
+    <div id="estado-carga" class="estado-carga">Cargando catálogo…</div>
+
+    <div class="no-encontraste">
+      <p>¿No encontraste lo que buscabas? Escríbeme directo y vemos juntos si consigo esa pieza para ti.</p>
+      <a class="btn btn-whatsapp" href="https://wa.me/573164493078?text=Hola%2C%20estaba%20viendo%20el%20cat%C3%A1logo%20y%20no%20encontr%C3%A9%20lo%20que%20buscaba.%20%C2%BFMe%20ayudas%20a%20conseguirlo%3F" target="_blank">Cuéntame qué buscas</a>
+    </div>
+  </div>
+</section>
+
+<section class="servicios" id="servicios">
+  <div class="wrap">
+    <div class="section-head"><h2>Cómo te lo hacemos llegar</h2></div>
+    <div class="serv-grid">
+      <div class="serv-card">
+        <h3>A domicilio</h3>
+        <p>Coordinamos entrega en Cali por WhatsApp: dirección, horario y método de pago. Tú confirmas antes de que salga el pedido.</p>
+      </div>
+      <div class="serv-card">
+        <h3>En persona</h3>
+        <p>Si prefieres ver la pieza antes de llevarla, agendamos un punto de encuentro o cita. Escríbenos y cuadramos día y hora.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pasos">
+  <div class="wrap">
+    <div class="section-head"><h2>Cómo comprar</h2><p>Tres pasos, sin complicaciones.</p></div>
+    <div class="pasos-grid">
+      <div class="paso"><div class="paso-num">1</div><h3>Elige tu pieza</h3><p>Filtra por género y categoría en el catálogo.</p></div>
+      <div class="paso"><div class="paso-num">2</div><h3>Escríbenos</h3><p>Toca "Pedir por WhatsApp" — el mensaje ya viene listo.</p></div>
+      <div class="paso"><div class="paso-num">3</div><h3>Coordina y recibe</h3><p>Confirmamos pago y entrega, a domicilio o en persona.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pagos" id="pagos">
+  <div class="wrap">
+    <div class="section-head"><h2>Métodos de pago</h2><p>Te confirmamos los datos exactos por WhatsApp al hacer el pedido.</p></div>
+    <div class="pagos-grid">
+      <div class="pago-card"><div class="icon">📲</div><h4>Nequi</h4><p>[Tu número Nequi]</p></div>
+      <div class="pago-card"><div class="icon">🏦</div><h4>Bancolombia</h4><p>[Tu cuenta Bancolombia]</p></div>
+      <div class="pago-card"><div class="icon">💳</div><h4>Mastercard</h4><p>Pago con tarjeta</p></div>
+      <div class="pago-card"><div class="icon">💳</div><h4>Visa</h4><p>Pago con tarjeta</p></div>
+    </div>
+    <div class="pago-nota">Nequi y Bancolombia funcionan directo (transferencia manual, confirmada por WhatsApp). Para cobrar tarjeta en línea sin transferencia manual, se necesita una pasarela de pago como Wompi o ePayco.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>Ana Betsy Store</h3>
+        <p>Ropa, calzado y accesorios para ella y para él, en Cali. Pedidos directo por WhatsApp.</p>
+      </div>
+      <div class="foot-links">
+        <h3 style="font-size:1rem;margin-bottom:12px;">Explora</h3>
+        <a href="#" onclick="irACatalogo('Mujer');return false;">Mujer</a>
+        <a href="#" onclick="irACatalogo('Hombre');return false;">Hombre</a>
+        <a href="#pagos">Métodos de pago</a>
+      </div>
+      <div class="foot-links">
+        <h3 style="font-size:1rem;margin-bottom:12px;">Contacto</h3>
+        <a href="https://wa.me/573164493078" target="_blank">WhatsApp: 316 449 3078</a>
+        <a href="#">Instagram: @anabetsystore</a>
+        <a href="#">TikTok: @anabetsystore</a>
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 Ana Betsy Store — hecho con cariño en Cali.</div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/573164493078?text=Hola%2C%20quiero%20hacer%20un%20pedido" target="_blank">💬</a>
+
+<script>
+const CATEGORIAS_COMUNES = ["Ropa","Zapatos","Jeans","Medias","Camisas","Pantalones","Chaquetas y buzos","Gorras","Ropa interior","Vestido de baño","Collares","Pulseras","Accesorios","Bolsos y carteras","Cinturones","Relojes","Lentes de sol","Ropa deportiva","Pijamas","Tallas grandes","Ropa de noche"];
+const CATEGORIAS_HOMBRE = ["Zapatos deportivos","Sacos"];
+
+const PRODUCTOS_RESPALDO = [
+  {nombre:"Vestido Aurora", precio:89000, talla:"S/M/L", categoria:"Ropa", genero:"Mujer", tipo:"Vestido", disponibilidad:true, destacado:false, foto:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=500"},
+  {nombre:"Collar Gota de Sol", precio:38000, talla:"Única", categoria:"Collares", genero:"Mujer", tipo:"Collar corto", disponibilidad:true, destacado:false, foto:"https://images.unsplash.com/photo-1599459183200-59c7687a0275?q=80&w=500"},
+  {nombre:"Vestido de baño Malla Coral", precio:72000, talla:"S/M/L", categoria:"Vestido de baño", genero:"Mujer", tipo:"Una pieza", disponibilidad:true, destacado:false, foto:"https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?q=80&w=500"},
+  {nombre:"Jordan Retro 4", precio:320000, talla:"38-44", categoria:"Zapatos deportivos", genero:"Hombre", tipo:"Tenis", disponibilidad:true, marca:"Nike", destacado:true, foto:"https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500"},
+  {nombre:"Buzo Urban Fit", precio:95000, talla:"S/M/L/XL", categoria:"Chaquetas y buzos", genero:"Hombre", tipo:"Buzo", disponibilidad:true, destacado:false, foto:"https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=500"},
+  {nombre:"Licra Deportiva Pro", precio:58000, talla:"S/M/L", categoria:"Vestido de baño", genero:"Hombre", tipo:"Licra para nadar", disponibilidad:true, destacado:false, foto:"https://images.unsplash.com/photo-1519415943484-9fa1873496d4?q=80&w=500"}
+];
+
+const IMAGENES_COLLAGE = [
+  "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=300",
+  "https://images.unsplash.com/photo-1611085583191-a3b181a88401?q=80&w=300",
+  "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=300",
+  "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=300",
+  "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=300",
+  "https://images.unsplash.com/photo-1599459183200-59c7687a0275?q=80&w=300",
+  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=300",
+  "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=300",
+  "https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?q=80&w=300",
+  "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?q=80&w=300",
+  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=300",
+  "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=300",
+  "https://images.unsplash.com/photo-1523293182086-7651a899d37f?q=80&w=300",
+  "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=300",
+  "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=300",
+  "https://images.unsplash.com/photo-1560243563-062bfc001d68?q=80&w=300"
+];
+
+let productos = [];
+let generoActivo = "Todos";
+let categoriaActiva = "Todas";
+let soloLimitados = false;
+
+function toggleLimitado(el){
+  soloLimitados = !soloLimitados;
+  el.classList.toggle("active");
+  renderLista();
+}
+
+function formatoPrecio(n){ return "$" + Number(n||0).toLocaleString("es-CO"); }
+
+function formatoFecha(iso){
+  if(!iso) return "";
+  const [y,m,d] = iso.split("-");
+  const meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return `${d} ${meses[parseInt(m,10)-1]}`;
+}
+
+function toggleMenu(){
+  document.getElementById("mobile-menu").classList.toggle("open");
+}
+
+function pintarCollage(){
+  const el = document.getElementById("hero-collage");
+  el.innerHTML = IMAGENES_COLLAGE.map(src => `<img src="${src}" alt="Ana Betsy Store">`).join("");
+}
+
+function categoriasDisponibles(){
+  if(generoActivo === "Hombre") return [...CATEGORIAS_COMUNES, ...CATEGORIAS_HOMBRE];
+  return CATEGORIAS_COMUNES;
+}
+
+function pintarFiltrosCategoria(){
+  const cont = document.getElementById("filtros-categoria");
+  const cats = ["Todas", ...categoriasDisponibles()];
+  cont.innerHTML = cats.map(c =>
+    `<button class="chip ${c===categoriaActiva?'active':''}" onclick="setCategoria('${c.replace(/'/g,"\\'")}', this)">${c}</button>`
+  ).join("");
+}
+
+function setGenero(g, el){
+  generoActivo = g;
+  categoriaActiva = "Todas";
+  document.querySelectorAll("#filtros-genero .chip").forEach(c=>c.classList.remove("active"));
+  if(el) el.classList.add("active");
+  pintarFiltrosCategoria();
+  renderLista();
+}
+
+function setCategoria(c, el){
+  categoriaActiva = c;
+  document.querySelectorAll("#filtros-categoria .chip").forEach(x=>x.classList.remove("active"));
+  if(el) el.classList.add("active");
+  renderLista();
+}
+
+function irACatalogo(genero){
+  const btn = [...document.querySelectorAll("#filtros-genero .chip")].find(c => c.dataset.genero === genero);
+  setGenero(genero, btn);
+  document.getElementById("catalogo").scrollIntoView({behavior:"smooth"});
+}
+
+function renderLista(){
+  let lista = productos;
+  if(generoActivo !== "Todos") lista = lista.filter(p => p.genero === generoActivo || p.genero === "Unisex");
+  if(categoriaActiva !== "Todas") lista = lista.filter(p => p.categoria === categoriaActiva);
+  if(soloLimitados) lista = lista.filter(p => p.limitado);
+  pintarGrid(lista);
+}
+
+function pintarGrid(lista){
+  const grid = document.getElementById("grid-productos");
+  if(lista.length === 0){
+    grid.innerHTML = "";
+    document.getElementById("estado-carga").textContent = "No hay productos en esta combinación todavía.";
+    document.getElementById("estado-carga").style.display = "block";
+    return;
+  }
+  document.getElementById("estado-carga").style.display = "none";
+  grid.innerHTML = lista.map(p => {
+    const msg = encodeURIComponent(`Hola! Vi el/la "${p.nombre}" (${formatoPrecio(p.precio)}) en la página y quiero pedirlo. Talla: ${p.talla || "N/A"}`);
+    return `
+    <div class="card">
+      ${p.destacado ? '<div class="destacado-tag">Importado</div>' : ''}
+      ${p.limitado ? '<div class="limitado-tag">⏳ Limitado</div>' : ''}
+      <img src="${p.foto || 'https://placehold.co/500x500/EADFE0/8A7383?text=Foto'}" alt="${p.nombre}">
+      <div class="card-body">
+        <h4>${p.nombre}</h4>
+        <div class="card-meta">
+          <span class="badge">${p.categoria}</span>
+          <span class="badge">${p.genero}</span>
+          ${p.talla ? `<span class="badge">Talla ${p.talla}</span>` : ""}
+          <span class="badge ${p.disponibilidad ? 'disp' : 'agotado'}">${p.disponibilidad ? 'Disponible' : 'Agotado'}</span>
+          ${p.limitado ? '<span class="badge" style="border-color:var(--magenta);color:var(--magenta);">Edición limitada</span>' : ''}
+          ${p.disponibleHasta ? `<span class="badge" style="border-color:var(--gold);color:var(--gold);">Hasta ${formatoFecha(p.disponibleHasta)}</span>` : ''}
+        </div>
+        <div class="precio">${formatoPrecio(p.precio)}</div>
+        <a class="card-cta" href="https://wa.me/573164493078?text=${msg}" target="_blank">Pedir por WhatsApp</a>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function cargarProductos(){
+  try{
+    const res = await fetch('/.netlify/functions/productos');
+    if(!res.ok) throw new Error("función no disponible aún");
+    const data = await res.json();
+    productos = data.productos || [];
+    if(productos.length === 0) productos = PRODUCTOS_RESPALDO;
+  }catch(e){
+    productos = PRODUCTOS_RESPALDO;
+  }
+  renderLista();
+}
+
+pintarCollage();
+pintarFiltrosCategoria();
+cargarProductos();
+</script>
+
+</body>
+</html>
